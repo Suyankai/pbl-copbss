@@ -19,7 +19,7 @@ if __name__ == '__main__':
 	for i in range(num):
 		ids[i] = ids[i].strip('\n')
 
-	for i in range(0,10):
+	for i in range(0,30):
 		#print(i)
 		_thread.start_new_thread(YTdownload,(ids[i],i,count,))
 		time.sleep(7)

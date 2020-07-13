@@ -2,11 +2,11 @@ from scipy.io import wavfile
 import numpy as np
 
 ii=0
-length=20
+length=10
 halb_length=length//2
-frequency=16000
+frequency=32000
 
-for i in range(0,10):
+for i in range(0,30):
     print(i)
     temp_wav = wavfile.read('wav/'+str(i)+'.wav')[1]
     wav_length = len(temp_wav)
