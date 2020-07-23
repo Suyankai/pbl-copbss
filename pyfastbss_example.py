@@ -78,7 +78,7 @@ if __name__ == '__main__':
         the shape of A is (time slots number, time slots number), the wav files are 
         randomly selected to generate the matrix S, A, X.
     '''
-    folder_address = '/home/huanzhuo/Documents/Novel_ICA/wav'
+    folder_address = '/home/huanzhuo/Documents/Novel_ICA/32000_wavs'
     #folder_address = '/Users/shenyunbin/Documents/Code/fast_bss/10s_wavs'
     duration = 10
     Eve_FastICA = []
@@ -154,6 +154,6 @@ if __name__ == '__main__':
         Eve_CdICA.append(tmp_cdica)
         Eve_UfICA.append(tmp_ufica)
 
-    save_data_csv(Eve_FastICA, 'fastica.csv')
-    save_data_csv(Eve_CdICA, 'cdica.csv')
-    save_data_csv(Eve_UfICA, 'ufica.csv')
+    save_data_csv(Eve_FastICA, 'test_results/fastica.csv')
+    save_data_csv(Eve_CdICA, 'test_results/cdica.csv')
+    save_data_csv(Eve_UfICA, 'test_results/ufica.csv')

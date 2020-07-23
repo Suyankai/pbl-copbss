@@ -12,18 +12,18 @@ if __name__ == '__main__':
 	global count
 	count = 0
     
-	ids=open("rerated_video_ids.txt", "r").readlines()
+	ids=open("related_video_ids.txt", "r").readlines()
 
 	num=len(ids)
 	print('totally',num)
 	for i in range(num):
 		ids[i] = ids[i].strip('\n')
 
-	for i in range(0,30):
+	for i in range(0,5):
 		#print(i)
 		_thread.start_new_thread(YTdownload,(ids[i],i,count,))
-		time.sleep(7)
+		time.sleep(1000)
 
 	print('all finished!-----------------')
-	time.sleep(20)
+	time.sleep(1000)
 	print('totally:',count)

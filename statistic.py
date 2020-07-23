@@ -13,9 +13,9 @@ def save_data_csv(data, name_csv):
 
 if __name__ == '__main__':
 
-    fastica = pd.read_csv("fastica.csv", header=None).values
-    cdica = pd.read_csv("cdica.csv", header=None).values
-    ufica = pd.read_csv("ufica.csv", header=None).values
+    fastica = pd.read_csv("test_results/fastica.csv", header=None).values
+    cdica = pd.read_csv("test_results/cdica.csv", header=None).values
+    ufica = pd.read_csv("test_results/ufica.csv", header=None).values
 
     source_number = fastica[:, 0].astype(int)
     snr_fastica = source_number
@@ -64,9 +64,9 @@ if __name__ == '__main__':
         conf_mean = np.mean(time_ufica[i, 1:])
         time_ufica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
 
-    save_data_csv(snr_fastica_stat, 'snr_fastica_stat.csv')
-    save_data_csv(time_fastica_stat, 'time_fastica_stat.csv')
-    save_data_csv(snr_cdica_stat, 'snr_cdica_stat.csv')
-    save_data_csv(time_cdica_stat, 'time_cdica_stat.csv')
-    save_data_csv(snr_ufica_stat, 'snr_ufica_stat.csv')
-    save_data_csv(time_ufica_stat, 'time_ufica_stat.csv')
+    save_data_csv(snr_fastica_stat, 'test_results/snr_fastica_stat.csv')
+    save_data_csv(time_fastica_stat, 'test_results/time_fastica_stat.csv')
+    save_data_csv(snr_cdica_stat, 'test_results/snr_cdica_stat.csv')
+    save_data_csv(time_cdica_stat, 'test_results/time_cdica_stat.csv')
+    save_data_csv(snr_ufica_stat, 'test_results/snr_ufica_stat.csv')
+    save_data_csv(time_ufica_stat, 'test_results/time_ufica_stat.csv')
