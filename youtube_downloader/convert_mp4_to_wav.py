@@ -3,9 +3,9 @@ from ffmpy3 import FFmpeg
 
 # conda install FFmpeg
 
-source_folder='mp4'
+source_folder='youtube_downloader/mp4'
 
-dst_folder='wav'
+dst_folder='youtube_downloader/wav'
 
 filenames = os.listdir(source_folder)
 num = len(filenames)
@@ -24,3 +24,4 @@ for i in range(0,num):
                 )
     #print(ff.cmd)
     ff.run()
+print('total number is: ', num)

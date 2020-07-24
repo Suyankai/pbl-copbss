@@ -170,9 +170,9 @@ class FastbssBasic():
         else:
             return self.generate_initial_matrix_B(V)
 
-    def _tieration(self, B, X):
+    def _iteration(self, B, X):
         '''
-        # _tieration(self, B, X):
+        # _iteration(self, B, X):
 
         # Usage:
 
@@ -219,7 +219,7 @@ class FastbssBasic():
             lim: Convergence of the iteration.
         '''
         for _ in range(max_iter):
-            B, lim = self._tieration(B, X)
+            B, lim = self._iteration(B, X)
             if lim < tol:
                 break
         return B, lim
@@ -254,7 +254,7 @@ class MultiLevelExtractionICA(FastbssBasic):
         _sum = 0
         _max = 0
         for _ in range(max_iter):
-            B, lim = self._tieration(B, X)
+            B, lim = self._iteration(B, X)
             self.Stack.append(lim)
             if lim > _max:
                 _max = lim
@@ -547,7 +547,7 @@ class FastICA(FastbssBasic):
         _sum = 0
         _max = 0
         for _ in range(max_iter):
-            B, lim = self._tieration(B, X)
+            B, lim = self._iteration(B, X)
             # print("3:",lim)
             self.Stack.append(lim)
             if lim > _max:
