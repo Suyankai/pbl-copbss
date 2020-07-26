@@ -273,7 +273,7 @@ class MultiLevelExtractionICA(FastbssBasic):
         # Usage:
 
             Newton iteration with multi-level signal extraction, the extraction
-            interval is 2^n, n=_ext_multi_ica,...,3,2,1.
+            interval is (_ext_multi_ica)^grad, grad=_ext_multi_ica,...,3,2,1.
 
         # Parameters:
 
@@ -282,7 +282,7 @@ class MultiLevelExtractionICA(FastbssBasic):
             max_iter: Maximum number of iteration.
             break_coef: The paramter, which determine when the iteration
                 should jump out.
-            _ext_multi_ica: The maximum signal extraction interval is  2^_ext_multi_ica
+            _ext_multi_ica: The maximum signal extraction interval is  m/((_ext_multi_ica)^grad) >= n
 
         # Output:
 

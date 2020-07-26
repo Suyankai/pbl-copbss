@@ -24,4 +24,3 @@ for i in range(0,num):
                 )
     #print(ff.cmd)
     ff.run()
-print('total number is: ', num)

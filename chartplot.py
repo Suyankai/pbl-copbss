@@ -14,7 +14,7 @@ snr_meica = pd.read_csv('test_results/snr_meica_stat.csv', header=None).values
 time_meica = pd.read_csv('test_results/time_meica_stat.csv', header=None).values
 snr_aeica = pd.read_csv('test_results/snr_aeica_stat.csv', header=None).values
 time_aeica = pd.read_csv('test_results/time_aeica_stat.csv', header=None).values
-source_number = np.arange(2, 21, 5)
+source_number = np.arange(2, 21, 1)
     
 
 reduce_time_mefast = time_meica[:, 1] / time_fastica[:, 1] * 100
@@ -23,7 +23,7 @@ labels = source_number
 
 with plt.style.context(['science', 'ieee']):
     fig = plt.figure(figsize=(5, 10/1.618))
-    width = 0.4
+    width = 0.2
 
     ax = fig.add_subplot(2,1,1)
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)

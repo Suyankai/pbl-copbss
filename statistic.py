@@ -24,7 +24,7 @@ if __name__ == '__main__':
     time_meica = source_number
     snr_aeica = source_number
     time_aeica = source_number
-    test_round = 10
+    test_round = 30
     for i in range(test_round):
         snr_fastica = np.c_[snr_fastica, fastica[:, 1+i*2]]
         time_fastica = np.c_[time_fastica, fastica[:, 2+i*2]]

@@ -78,22 +78,22 @@ if __name__ == '__main__':
         the shape of A is (time slots number, time slots number), the wav files are 
         randomly selected to generate the matrix S, A, X.
     '''
-    folder_address = '/home/huanzhuo/Documents/Novel_ICA/32000_wavs'
+    folder_address = '/home/huanzhuo/Documents/Novel_ICA/32000_wav_factory'
     duration = 5
     Eve_FastICA = []
     Eve_MeICA = []
     Eve_AeICA = []
 
-    for source_number in np.arange(2, 21, 5):
+    for source_number in np.arange(2, 21, 1):
         tmp_fastica = [source_number]
         tmp_meica = [source_number]
         tmp_aeica = [source_number]
-        for i in range(10):
+        for i in range(30):
             
             S, A, X = pyfbss_tb.generate_matrix_S_A_X(
-                folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 0.1))
+                folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
             
-            print('type             eval_dB             time(ms) for '+str(source_number)+' sources')
+            print('type         eval_dB          time(ms) for '+str(source_number)+' sources')
             print('--------------------------------------------------------------------------------')
             
             eval_type = 'sdr'
