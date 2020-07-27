@@ -616,5 +616,6 @@ class PyFastbss(MultiLevelExtractionICA, UltraFastICA, FastICA):
             print('Method Identification Error!')
             return None
 
+
 # pyfastbss core
 pyfbss = PyFastbss()

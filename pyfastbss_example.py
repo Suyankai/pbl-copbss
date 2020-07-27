@@ -28,6 +28,8 @@ PGB = progressbar.ProgressBar()
     S = B @ X
     B = A ^ -1
 '''
+
+
 def save_data_csv(data, name_csv):
     if os.path.isfile(name_csv):
         f = open(file=name_csv, mode='ab')
@@ -89,13 +91,12 @@ if __name__ == '__main__':
         tmp_meica = [source_number]
         tmp_aeica = [source_number]
         for i in range(30):
-            
-            S, A, X = pyfbss_tb.generate_matrix_S_A_X(
-                folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
-            
-            print('type         eval_dB          time(ms) for '+str(source_number)+' sources')
+
+            S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
+
+            print('type         eval_dB          time(ms) for ' + str(source_number)+' sources')
             print('--------------------------------------------------------------------------------')
-            
+
             eval_type = 'sdr'
 
             '''
@@ -128,7 +129,6 @@ if __name__ == '__main__':
             # tmp_cdica.extend([Eval_dB, time])
             # print('cdica ', source_number, Eval_dB, time)
 
-            
             '''
             #time and snr test for ultra adaptive extraction ica
             '''

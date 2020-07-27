@@ -2,28 +2,30 @@ from pytube import YouTube
 import _thread
 import time
 
-def YTdownload(url,i,count):
-	yt = YouTube('http://youtube.com/watch?v='+url)
-	yt.streams.filter(subtype='mp4').first().download(output_path='youtube_downloader/mp4/', filename=str(i)) #.filter(only_audio=True)
-	count+=1
-	print(i,': finished!')
-    
+
+def YTdownload(url, i, count):
+    yt = YouTube('http://youtube.com/watch?v='+url)
+    yt.streams.filter(subtype='mp4').first().download(output_path='youtube_downloader/mp4/', filename=str(i))  # .filter(only_audio=True)
+    count += 1
+    print(i, ': finished!')
+
+
 if __name__ == '__main__':
-	global count
-	count = 0
-    
-	ids=open('youtube_downloader/related_video_ids.txt', 'r').readlines()
+    global count
+    count = 0
 
-	num=len(ids)
-	print('totally: ',num)
-	for i in range(num):
-		ids[i] = ids[i].strip('\n')
+    ids = open('youtube_downloader/related_video_ids.txt', 'r').readlines()
 
-	for i in range(500,550):
-		#print(i)
-		_thread.start_new_thread(YTdownload,(ids[i],i,count,))
-		time.sleep(10)
+    num = len(ids)
+    print('totally: ', num)
+    for i in range(num):
+        ids[i] = ids[i].strip('\n')
 
-	print('all finished!-----------------')
-	time.sleep(100)
-	print('totally:',count)
+    for i in range(500, 550):
+        # print(i)
+        _thread.start_new_thread(YTdownload, (ids[i], i, count,))
+        time.sleep(10)
+
+    print('all finished!-----------------')
+    time.sleep(100)
+    print('totally:', count)

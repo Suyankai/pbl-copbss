@@ -3,6 +3,7 @@ import pandas as pd
 import scipy.stats as st
 import os.path
 
+
 def save_data_csv(data, name_csv):
     if os.path.isfile(name_csv):
         f = open(file=name_csv, mode='ab')
@@ -10,6 +11,7 @@ def save_data_csv(data, name_csv):
         f.close()
     else:
         np.savetxt(name_csv, data, fmt='%1.4f', delimiter=",")
+
 
 if __name__ == '__main__':
 

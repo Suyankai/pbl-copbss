@@ -1,3 +1,6 @@
+import mpl_toolkits.axisartist as axisartist
+import matplotlib.ticker as mtick
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.stats as st
@@ -5,9 +8,6 @@ import os.path
 import matplotlib
 
 print(matplotlib.get_configdir())
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mtick
-import mpl_toolkits.axisartist as axisartist
 
 snr_fastica = pd.read_csv('test_results/snr_fastica_stat.csv', header=None).values
 # time_fastica = pd.read_csv('test_results/time_fastica_stat.csv', header=None).values

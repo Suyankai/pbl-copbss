@@ -317,6 +317,5 @@ class PyFastbssTestbed:
                 'Error - bss evaluation : False type, the type must be fast_snr, sdr, sir, sar or perm.')
 
 
-
 # pyfastbss testbed
 pyfbss_tb = PyFastbssTestbed()
