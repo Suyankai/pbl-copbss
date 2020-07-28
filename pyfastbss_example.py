@@ -2,6 +2,7 @@ from pyfastbss_core import pyfbss
 from pyfastbss_testbed import pyfbss_tb
 import numpy as np
 import os
+import math
 import progressbar
 PGB = progressbar.ProgressBar()
 '''
@@ -82,17 +83,20 @@ if __name__ == '__main__':
     '''
     folder_address = '/home/huanzhuo/Documents/Novel_ICA/32000_wav_factory'
     duration = 5
+    extraction_base = 2
     Eve_FastICA = []
     Eve_MeICA = []
     Eve_AeICA = []
 
-    for source_number in np.arange(2, 21, 1):
+    for source_number in np.arange(2, 20, 4):
         tmp_fastica = [source_number]
         tmp_meica = [source_number]
         tmp_aeica = [source_number]
-        for i in range(30):
+        for i in range(5):
 
             S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
+            grad = int(math.log(X.shape[1]//X.shape[0], extraction_base))
+            initial_extraction_interval = extraction_base**grad
 
             print('type         eval_dB          time(ms) for ' + str(source_number)+' sources')
             print('--------------------------------------------------------------------------------')
@@ -113,7 +117,7 @@ if __name__ == '__main__':
             #Time and snr test for multi level extraction ica
             '''
             pyfbss_tb.timer_start()
-            hat_S = pyfbss.meica(X, max_iter=100, break_coef=0.92, ext_multi_ica=7)
+            hat_S = pyfbss.meica(X, max_iter=100, break_coef=0.92, ext_multi_ica = extraction_base)
             time = pyfbss_tb.timer_value()
             Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
             tmp_meica.extend([Eval_dB, time])
@@ -132,12 +136,12 @@ if __name__ == '__main__':
             '''
             #time and snr test for ultra adaptive extraction ica
             '''
-            pyfbss_tb.timer_start()
-            hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=128)
-            time = pyfbss_tb.timer_value()
-            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            tmp_aeica.extend([Eval_dB, time])
-            print('aeica:   ', Eval_dB, time)
+            # pyfbss_tb.timer_start()
+            # hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=initial_extraction_interval)
+            # time = pyfbss_tb.timer_value()
+            # Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+            # tmp_aeica.extend([Eval_dB, time])
+            # print('aeica:   ', Eval_dB, time)
 
             '''
             #time and snr test for ultra fast ica
@@ -154,6 +158,6 @@ if __name__ == '__main__':
         Eve_MeICA.append(tmp_meica)
         Eve_AeICA.append(tmp_aeica)
 
-    save_data_csv(Eve_FastICA, 'test_results/fastica.csv')
-    save_data_csv(Eve_MeICA, 'test_results/meica.csv')
-    save_data_csv(Eve_AeICA, 'test_results/aeica.csv')
+    save_data_csv(Eve_FastICA, 'tmp/fastica.csv')
+    save_data_csv(Eve_MeICA, 'tmp/meica.csv')
+    save_data_csv(Eve_AeICA, 'tmp/aeica.csv')

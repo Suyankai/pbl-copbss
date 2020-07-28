@@ -9,25 +9,25 @@ import matplotlib
 
 print(matplotlib.get_configdir())
 
-snr_fastica = pd.read_csv('test_results/snr_fastica_stat.csv', header=None).values
-# time_fastica = pd.read_csv('test_results/time_fastica_stat.csv', header=None).values
-time_fastica = pd.read_csv('test_results/time_fastica_stat.csv', header=None)
+snr_fastica = pd.read_csv('tmp/snr_fastica_stat.csv', header=None).values
+# time_fastica = pd.read_csv('tmp/time_fastica_stat.csv', header=None).values
+time_fastica = pd.read_csv('tmp/time_fastica_stat.csv', header=None)
 time_fastica['err'] = time_fastica.loc[:, 1].sub(time_fastica.loc[:, 0], axis=0)
 time_fastica = time_fastica.values
 
-snr_meica = pd.read_csv('test_results/snr_meica_stat.csv', header=None).values
-# time_meica = pd.read_csv('test_results/time_meica_stat.csv', header=None).values
-time_meica = pd.read_csv('test_results/time_meica_stat.csv', header=None)
+snr_meica = pd.read_csv('tmp/snr_meica_stat.csv', header=None).values
+# time_meica = pd.read_csv('tmp/time_meica_stat.csv', header=None).values
+time_meica = pd.read_csv('tmp/time_meica_stat.csv', header=None)
 time_meica['err'] = time_meica.loc[:, 1].sub(time_meica.loc[:, 0], axis=0)
 time_meica = time_meica.values
 
-snr_aeica = pd.read_csv('test_results/snr_aeica_stat.csv', header=None).values
-# time_aeica = pd.read_csv('test_results/time_aeica_stat.csv', header=None).values
-time_aeica = pd.read_csv('test_results/time_aeica_stat.csv', header=None)
+snr_aeica = pd.read_csv('tmp/snr_aeica_stat.csv', header=None).values
+# time_aeica = pd.read_csv('tmp/time_aeica_stat.csv', header=None).values
+time_aeica = pd.read_csv('tmp/time_aeica_stat.csv', header=None)
 time_aeica['err'] = time_aeica.loc[:, 1].sub(time_aeica.loc[:, 0], axis=0)
 time_aeica = time_aeica.values
 
-source_number = np.arange(2, 21, 1)
+source_number = np.arange(2, 20, 4)
 
 reduce_time_mefast = time_meica[:, 1] / time_fastica[:, 1] * 100
 reduce_time_aefast = time_aeica[:, 1] / time_fastica[:, 1] * 100
@@ -65,7 +65,7 @@ with plt.style.context(['science', 'ieee']):
     # ax_2.set_xlim([0, 20])
     # ax_2.set_ylim([0, 700])
     ax_2.set_xticks(np.arange(0, 21, 5))
-    ax_2.set_yticks(np.arange(0, 1001, 100))
+    ax_2.set_yticks(np.arange(0, 10000, 1000))
     ax_2.set_xlabel(r'Source Number $n$')
     ax_2.set_ylabel(r'Time ($ms$)')
     ax_2.legend([line1, line2, line3], ['MeICA', 'AeICA', 'FastICA'], loc='upper left')
