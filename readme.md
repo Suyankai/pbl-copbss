@@ -1,10 +1,11 @@
+# Overview
 This project includes all improved fastica algorithms for cooperative Blind Source Separation (BSS) based on FastICA algorithm.
 - meica: multi-level extraction
 - cdica: component dependent
 - aeica: adaptive extraction
 - ufica: aeica + cdica
 
-# Required packages:
+# Required packages
 - numpy
 - scipy
 - museval
@@ -13,7 +14,7 @@ This project includes all improved fastica algorithms for cooperative Blind Sour
 
 These could be installed by 'conda install numpy scipy museval progressbar2 ffmpeg', if the eviroment is managed by Anaconda.
 
-# Key codes:
+# Key codes
 - pyfastbss_core.py
   - core analysis.
 - pyfastbss_testbed.py
@@ -21,6 +22,6 @@ These could be installed by 'conda install numpy scipy museval progressbar2 ffmp
 - pyfastbss_example.py
   - simulation setup and data measurement.
 
-# To-do:
+# To-do
 - update 'statistic.py'
 - add reference papers
