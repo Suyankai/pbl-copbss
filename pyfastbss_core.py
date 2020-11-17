@@ -228,7 +228,7 @@ class FastbssBasic():
 # version3.0
 class MultiLevelExtractionICA(FastbssBasic):
 
-    def newton_iteration_auto_break(self, B, X, max_iter, break_coef):
+    def newton_iteration_auto_break(self, B, X, max_iter, tol, break_coef):
         '''
         # newton_iteration_auto_break(self, B, X, max_iter, break_coef):
 
@@ -261,11 +261,11 @@ class MultiLevelExtractionICA(FastbssBasic):
                 self.Stack = [lim]
                 _sum = 0
             _sum += lim
-            if _sum < break_coef*0.5*(self.Stack[0]+self.Stack[-1])*len(self.Stack):
+            if _sum < break_coef*0.5*(self.Stack[0]+self.Stack[-1])*len(self.Stack) or self.Stack[-1]<tol:
                 break
         return B, lim
 
-    def multi_level_extraction_newton_iteration(self, X, B, max_iter,  break_coef, _ext_multi_ica):
+    def multi_level_extraction_newton_iteration(self, X, B, max_iter, tol, break_coef, _ext_multi_ica):
         '''
         # multi_level_extraction_newton_iteration
         # (self, X, B, max_iter,  break_coef, _ext_multi_ica):
@@ -297,11 +297,11 @@ class MultiLevelExtractionICA(FastbssBasic):
             B = self.decorrelation(np.dot(B, V_inv))
             self.Stack = []
             B = self.newton_iteration_auto_break(
-                B, _X, max_iter, break_coef)[0]
+                B, _X, max_iter, tol, break_coef)[0]
             B = np.dot(B, V)
         return B
 
-    def meica(self, X, max_iter=100, break_coef=0.9, ext_multi_ica=8):
+    def meica(self, X, max_iter=100, tol=1e-04, break_coef=0.9, ext_multi_ica=8):
         '''
         # mleica(self, X, max_iter=100, break_coef=0.9, ext_multi_ica=8):
 
@@ -325,7 +325,7 @@ class MultiLevelExtractionICA(FastbssBasic):
         self.Stack = []
         B1 = self.generate_initial_matrix_B(X)
         B2 = self.multi_level_extraction_newton_iteration(
-            X, B1, max_iter, break_coef, ext_multi_ica)
+            X, B1, max_iter, tol, break_coef, ext_multi_ica)
         S2 = np.dot(B2, X)
         return S2
 
@@ -605,7 +605,7 @@ class PyFastbss(MultiLevelExtractionICA, UltraFastICA, FastICA):
         if method == 'fastica':
             return self.fastica(X, max_iter, tol)
         elif method == 'meica':
-            return self.meica(X, max_iter, break_coef, ext_multi_ica)
+            return self.meica(X, max_iter, tol, break_coef, ext_multi_ica)
         elif method == 'cdica':
             return self.cdica(X, max_iter, tol, ext_initial_matrix)
         elif method == 'aeica':

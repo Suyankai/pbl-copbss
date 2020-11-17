@@ -1,7 +1,7 @@
 __pycache__/
-google_dataset/32000_wavs/
-whitenoise/32000_wavs/
-youtube_downloader/mp4/
-youtube_downloader/wav/
-48000_wavs/
+.vscode
+google_dataset/
+pump_dataset/
+
+
 

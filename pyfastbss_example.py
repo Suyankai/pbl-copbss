@@ -20,7 +20,7 @@ PGB = progressbar.ProgressBar()
     X: Mixed source signals. shape = (source_number, time_slots_number)
     A: Mixing matrix. shape = (source_number, source_number)
     B: Separation matrix. shape = (source_number, source_number)
-    hat_S: Estimated source signals durch ICA algorithms. 
+    hat_S: Estimated source signals durch ICA algorithms.
         shape = (source_number, time_slots_number)
 
 # Notes:
@@ -29,7 +29,6 @@ PGB = progressbar.ProgressBar()
     S = B @ X
     B = A ^ -1
 '''
-
 
 def save_data_csv(data, name_csv):
     if os.path.isfile(name_csv):
@@ -43,30 +42,30 @@ def save_data_csv(data, name_csv):
 if __name__ == '__main__':
 
     '''
-    # generate_matrix_S_A_X(self, folder_address, wav_range, source_number, 
+    # generate_matrix_S_A_X(self, folder_address, wav_range, source_number,
     # mixing_type="random", max_min=(1, 0.01), mu_sigma=(0, 1)):
 
     # Usage:
 
-        Generate the mixing matrix S, A, X according to the size of the source 
+        Generate the mixing matrix S, A, X according to the size of the source
         signal matrix S
 
     # Parameters:
 
-        folder_address: Define folder adress, in which the *.wav files exist. 
+        folder_address: Define folder adress, in which the *.wav files exist.
             The wav files must have only 1 channel.
 
-        duration: The duration of the output original signals, 
+        duration: The duration of the output original signals,
             i.e. the whole time domain of the output matrix S
 
-        source number: The number of the source signals in matrix S 
+        source number: The number of the source signals in matrix S
 
         mixing_type:
-            'random': The value of a_i_j are in interval (minimum_value, minimum_value) 
-                randomly distributed 
-            'normal': The value of a_i_j (i==j) are equal to 1. The value of a_i_j (i!=j) 
-                are normal distributed, the distribution correspond with N(mu,sigma) 
-                normal distirbution, where the mu is the average value of the a_i,j (i!=j) , 
+            'random': The value of a_i_j are in interval (minimum_value, minimum_value)
+                randomly distributed
+            'normal': The value of a_i_j (i==j) are equal to 1. The value of a_i_j (i!=j)
+                are normal distributed, the distribution correspond with N(mu,sigma)
+                normal distirbution, where the mu is the average value of the a_i,j (i!=j) ,
                 and the sigma is the variance of the a_i_j (i!=j).
 
         max_min: max_min = (minimum_value, minimum_value), are used when the  mixing_type
@@ -77,87 +76,46 @@ if __name__ == '__main__':
     # Output:
 
         Matrix S, A, X.
-        The shape of the S and X are (source number, time slots number), 
-        the shape of A is (time slots number, time slots number), the wav files are 
+        The shape of the S and X are (source number, time slots number),
+        the shape of A is (time slots number, time slots number), the wav files are
         randomly selected to generate the matrix S, A, X.
     '''
-    folder_address = '/home/huanzhuo/Documents/Novel_ICA/32000_wav_factory'
+    folder_address = 'google_dataset/32000_wav_factory'
     duration = 5
     extraction_base = 2
+    source_number = 5
     Eve_FastICA = []
+    Eve_CdICA = []
     Eve_MeICA = []
     Eve_AeICA = []
+    interval = 5
 
-    for source_number in np.arange(2, 20, 4):
-        tmp_fastica = [source_number]
-        tmp_meica = [source_number]
-        tmp_aeica = [source_number]
-        for i in range(5):
+    tmp_meica = [interval]
+    tmp_aeica = [interval]
+    for i in range(2):
 
-            S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
-            grad = int(math.log(X.shape[1]//X.shape[0], extraction_base))
-            initial_extraction_interval = extraction_base**grad
+        S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
+        print('type        eval_dB          time(ms) for       ' + str(source_number)+' sources with extraction interval ' + str(interval) + ' of ' + str(i) + '-th. running')
+        print('--------------------------------------------------------------------------------')
+        eval_type = 'sdr'
 
-            print('type         eval_dB          time(ms) for ' + str(source_number)+' sources')
-            print('--------------------------------------------------------------------------------')
+        # Time and snr test for multi level extraction ica
+        pyfbss_tb.timer_start()
+        hat_S = pyfbss.meica(X, max_iter=100, tol=1e-04, break_coef=0.92, ext_multi_ica=extraction_base)
+        time = pyfbss_tb.timer_value()
+        Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+        tmp_meica.extend([Eval_dB, time])
+        print('meica:   ', Eval_dB, time)
 
-            eval_type = 'sdr'
+        # time and snr test for ultra adaptive extraction ica
+        pyfbss_tb.timer_start()
+        hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=interval)
+        time = pyfbss_tb.timer_value()
+        Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+        tmp_aeica.extend([Eval_dB, time])
+        print('aeica:   ', Eval_dB, time)
 
-            '''
-            #Time and snr test for fast ica
-            '''
-            pyfbss_tb.timer_start()
-            hat_S = pyfbss.fastica(X, max_iter=100)
-            time = pyfbss_tb.timer_value()
-            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            tmp_fastica.extend([Eval_dB, time])
-            print('fastica: ', Eval_dB, time)
-
-            '''
-            #Time and snr test for multi level extraction ica
-            '''
-            pyfbss_tb.timer_start()
-            hat_S = pyfbss.meica(X, max_iter=100, break_coef=0.92, ext_multi_ica = extraction_base)
-            time = pyfbss_tb.timer_value()
-            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            tmp_meica.extend([Eval_dB, time])
-            print('meica:   ', Eval_dB, time)
-
-            '''
-            #time and snr test for component dependent ica
-            '''
-            # pyfbss_tb.timer_start()
-            # hat_S = pyfbss.cdica(X, max_iter=100, tol=1e-04, ext_initial_matrix=0)
-            # time = pyfbss_tb.timer_value()
-            # Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            # tmp_cdica.extend([Eval_dB, time])
-            # print('cdica ', source_number, Eval_dB, time)
-
-            '''
-            #time and snr test for ultra adaptive extraction ica
-            '''
-            # pyfbss_tb.timer_start()
-            # hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=initial_extraction_interval)
-            # time = pyfbss_tb.timer_value()
-            # Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            # tmp_aeica.extend([Eval_dB, time])
-            # print('aeica:   ', Eval_dB, time)
-
-            '''
-            #time and snr test for ultra fast ica
-            '''
-            # pyfbss_tb.timer_start()
-            # hat_S = pyfbss.ufica(X, max_iter=100, tol=1e-04, ext_initial_matrix=0, ext_adapt_ica=100)
-            # time = pyfbss_tb.timer_value()
-            # Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            # tmp_ufica.extend([Eval_dB, time])
-            # #print('ufica ', Eval_dB, time)
-            print('--------------------------------------------------------------------------------')
-
-        Eve_FastICA.append(tmp_fastica)
-        Eve_MeICA.append(tmp_meica)
-        Eve_AeICA.append(tmp_aeica)
-
-    save_data_csv(Eve_FastICA, 'tmp/fastica.csv')
-    save_data_csv(Eve_MeICA, 'tmp/meica.csv')
-    save_data_csv(Eve_AeICA, 'tmp/aeica.csv')
+    Eve_MeICA.append(tmp_meica)
+    Eve_AeICA.append(tmp_aeica)
+    save_data_csv(Eve_MeICA, 'test_results/google_dataset/meica'+'_'+str(source_number)+'.csv')
+    save_data_csv(Eve_AeICA, 'test_results/google_dataset/aeica'+'_'+str(source_number)+'.csv')

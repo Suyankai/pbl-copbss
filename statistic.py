@@ -26,7 +26,7 @@ if __name__ == '__main__':
     time_meica = source_number
     snr_aeica = source_number
     time_aeica = source_number
-    test_round = 5
+    test_round = 30
     for i in range(test_round):
         snr_fastica = np.c_[snr_fastica, fastica[:, 1+i*2]]
         time_fastica = np.c_[time_fastica, fastica[:, 2+i*2]]
@@ -44,27 +44,27 @@ if __name__ == '__main__':
     for i in range(len(source_number)):
         conf_interval_low, conf_interval_high = st.t.interval(0.95, len(snr_fastica[i, 1:])-1, loc=np.mean(snr_fastica[i, 1:]), scale=st.sem(snr_fastica[i, 1:]))
         conf_mean = np.mean(snr_fastica[i, 1:])
-        snr_fastica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
+        snr_fastica_stat.append([source_number[i], conf_interval_low, conf_mean, conf_interval_high])
 
         conf_interval_low, conf_interval_high = st.t.interval(0.95, len(time_fastica[i, 1:])-1, loc=np.mean(time_fastica[i, 1:]), scale=st.sem(time_fastica[i, 1:]))
         conf_mean = np.mean(time_fastica[i, 1:])
-        time_fastica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
+        time_fastica_stat.append([source_number[i], conf_interval_low, conf_mean, conf_interval_high])
 
         conf_interval_low, conf_interval_high = st.t.interval(0.95, len(snr_meica[i, 1:])-1, loc=np.mean(snr_meica[i, 1:]), scale=st.sem(snr_meica[i, 1:]))
         conf_mean = np.mean(snr_meica[i, 1:])
-        snr_meica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
+        snr_meica_stat.append([source_number[i], conf_interval_low, conf_mean, conf_interval_high])
 
         conf_interval_low, conf_interval_high = st.t.interval(0.95, len(time_meica[i, 1:])-1, loc=np.mean(time_meica[i, 1:]), scale=st.sem(time_meica[i, 1:]))
         conf_mean = np.mean(time_meica[i, 1:])
-        time_meica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
+        time_meica_stat.append([source_number[i], conf_interval_low, conf_mean, conf_interval_high])
 
         conf_interval_low, conf_interval_high = st.t.interval(0.95, len(snr_aeica[i, 1:])-1, loc=np.mean(snr_aeica[i, 1:]), scale=st.sem(snr_aeica[i, 1:]))
         conf_mean = np.mean(snr_aeica[i, 1:])
-        snr_aeica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
+        snr_aeica_stat.append([source_number[i], conf_interval_low, conf_mean, conf_interval_high])
 
         conf_interval_low, conf_interval_high = st.t.interval(0.95, len(time_aeica[i, 1:])-1, loc=np.mean(time_aeica[i, 1:]), scale=st.sem(time_aeica[i, 1:]))
         conf_mean = np.mean(time_aeica[i, 1:])
-        time_aeica_stat.append([conf_interval_low, conf_mean, conf_interval_high])
+        time_aeica_stat.append([source_number[i], conf_interval_low, conf_mean, conf_interval_high])
 
     save_data_csv(snr_fastica_stat, 'tmp/snr_fastica_stat.csv')
     save_data_csv(time_fastica_stat, 'tmp/time_fastica_stat.csv')
