@@ -1,5 +1,6 @@
 __pycache__/
 .vscode
+.gitignore
 pump_dataset/
-chartplot.py
 statistic.py
+chartplot.py
