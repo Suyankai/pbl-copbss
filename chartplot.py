@@ -10,30 +10,30 @@ import matplotlib
 print(matplotlib.get_configdir())
 
 # snr_fastica = pd.read_csv('tmp/snr_fastica_stat.csv', header=None).values
-snr_fastica = pd.read_csv('tmp/snr_fastica_stat.csv', header=None)
+snr_fastica = pd.read_csv('test_results/google_dataset/fastica_accuracy_stat.csv', header=None)
 snr_fastica['err'] = snr_fastica.loc[:, 2].sub(snr_fastica.loc[:, 1], axis=0)
 snr_fastica = snr_fastica.values
 # time_fastica = pd.read_csv('tmp/time_fastica_stat.csv', header=None).values
-time_fastica = pd.read_csv('tmp/time_fastica_stat.csv', header=None)
+time_fastica = pd.read_csv('test_results/google_dataset/fastica_time_stat.csv', header=None)
 time_fastica['err'] = time_fastica.loc[:, 2].sub(
     time_fastica.loc[:, 1], axis=0)
 time_fastica = time_fastica.values
 
 # snr_meica = pd.read_csv('tmp/snr_meica_stat.csv', header=None).values
-snr_meica = pd.read_csv('tmp/snr_meica_stat.csv', header=None)
+snr_meica = pd.read_csv('test_results/google_dataset/meica_accuracy_stat.csv', header=None)
 snr_meica['err'] = snr_meica.loc[:, 2].sub(snr_meica.loc[:, 1], axis=0)
 snr_meica = snr_meica.values
 # time_meica = pd.read_csv('tmp/time_meica_stat.csv', header=None).values
-time_meica = pd.read_csv('tmp/time_meica_stat.csv', header=None)
+time_meica = pd.read_csv('test_results/google_dataset/meica_time_stat.csv', header=None)
 time_meica['err'] = time_meica.loc[:, 2].sub(time_meica.loc[:, 1], axis=0)
 time_meica = time_meica.values
 
 # snr_aeica = pd.read_csv('tmp/snr_aeica_stat.csv', header=None).values
-snr_aeica = pd.read_csv('tmp/snr_aeica_stat.csv', header=None)
+snr_aeica = pd.read_csv('test_results/google_dataset/aeica_accuracy_stat.csv', header=None)
 snr_aeica['err'] = snr_aeica.loc[:, 2].sub(snr_aeica.loc[:, 1], axis=0)
 snr_aeica = snr_aeica.values
 # time_aeica = pd.read_csv('tmp/time_aeica_stat.csv', header=None).values
-time_aeica = pd.read_csv('tmp/time_aeica_stat.csv', header=None)
+time_aeica = pd.read_csv('test_results/google_dataset/aeica_time_stat.csv', header=None)
 time_aeica['err'] = time_aeica.loc[:, 2].sub(time_aeica.loc[:, 1], axis=0)
 time_aeica = time_aeica.values
 
@@ -67,7 +67,7 @@ with plt.style.context(['science', 'ieee']):
     ax.set_ylabel(r'SDR ($dB$)')
     ax.legend([rects1, rects2, rects3], [
               'MeICA', 'AeICA', 'FastICA'], loc='upper right')
-    plt.savefig('bss_sdr.pdf', dpi=600, bbox_inches='tight')
+    plt.savefig('test_results/bss_sdr.pdf', dpi=600, bbox_inches='tight')
 
     fig_2 = plt.figure(figsize=(fig_width, fig_width / 1.618))
     ax_2 = fig_2.add_subplot(1, 1, 1)
@@ -89,4 +89,4 @@ with plt.style.context(['science', 'ieee']):
     ax_2.set_ylabel(r'Time ($ms$)')
     ax_2.legend([line1, line2, line3], [
                 'MeICA', 'AeICA', 'FastICA'], loc='upper left')
-    plt.savefig('bss_time.pdf', dpi=600, bbox_inches='tight')
+    plt.savefig('test_results/bss_time.pdf', dpi=600, bbox_inches='tight')

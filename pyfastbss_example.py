@@ -83,39 +83,64 @@ if __name__ == '__main__':
     folder_address = 'google_dataset/32000_wav_factory'
     duration = 5
     extraction_base = 2
-    source_number = 5
+    interval = 30
+
     Eve_FastICA = []
     Eve_CdICA = []
     Eve_MeICA = []
     Eve_AeICA = []
-    interval = 5
 
-    tmp_meica = [interval]
-    tmp_aeica = [interval]
-    for i in range(2):
+    for source_number in np.arange(2, 5, 1):
+        tmp_fastica = [source_number]
+        tmp_cdica = [source_number]
+        tmp_aeica = [source_number]
+        tmp_meica = [source_number]
 
-        S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
-        print('type        eval_dB          time(ms) for       ' + str(source_number)+' sources with extraction interval ' + str(interval) + ' of ' + str(i) + '-th. running')
-        print('--------------------------------------------------------------------------------')
-        eval_type = 'sdr'
+        for test_i in np.arange(1, 6, 1):
+            S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
+            print('type        eval_dB            time(ms) for       ' + str(source_number)+' sources, ' + str(test_i) + '-th test.')
+            print('--------------------------------------------------------------------------------')
+            eval_type = 'sdr'
 
-        # Time and snr test for multi level extraction ica
-        pyfbss_tb.timer_start()
-        hat_S = pyfbss.meica(X, max_iter=100, tol=1e-04, break_coef=0.92, ext_multi_ica=extraction_base)
-        time = pyfbss_tb.timer_value()
-        Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-        tmp_meica.extend([Eval_dB, time])
-        print('meica:   ', Eval_dB, time)
+            # time and accuracy of FastICA
+            pyfbss_tb.timer_start()
+            hat_S = pyfbss.fastica(X, max_iter=100, tol=1e-04)
+            time = pyfbss_tb.timer_value()
+            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+            tmp_fastica.extend([Eval_dB, time])
+            print('FastICA: ', Eval_dB, '; ', time)
 
-        # time and snr test for ultra adaptive extraction ica
-        pyfbss_tb.timer_start()
-        hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=interval)
-        time = pyfbss_tb.timer_value()
-        Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-        tmp_aeica.extend([Eval_dB, time])
-        print('aeica:   ', Eval_dB, time)
+            # time and accuracy of CdICA
+            pyfbss_tb.timer_start()
+            hat_S = pyfbss.cdica(X, max_iter=100, tol=1e-04, ext_initial_matrix=0)
+            time = pyfbss_tb.timer_value()
+            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+            tmp_cdica.extend([Eval_dB, time])
+            print('CdICA:   ', Eval_dB, '; ', time)
 
-    Eve_MeICA.append(tmp_meica)
-    Eve_AeICA.append(tmp_aeica)
-    save_data_csv(Eve_MeICA, 'test_results/google_dataset/meica'+'_'+str(source_number)+'.csv')
-    save_data_csv(Eve_AeICA, 'test_results/google_dataset/aeica'+'_'+str(source_number)+'.csv')
+            # Time and accuracy of AeICA
+            pyfbss_tb.timer_start()
+            hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=interval)
+            time = pyfbss_tb.timer_value()
+            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+            tmp_aeica.extend([Eval_dB, time])
+            print('AeICA:   ', Eval_dB, '; ', time)
+
+            # Time and accuracy of MeICA
+            pyfbss_tb.timer_start()
+            hat_S = pyfbss.meica(X, max_iter=100, tol=1e-04, break_coef=0.92, ext_multi_ica=extraction_base)
+            time = pyfbss_tb.timer_value()
+            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+            tmp_meica.extend([Eval_dB, time])
+            print('MeICA:   ', Eval_dB, '; ', time)
+
+        # Format of results: source_number, eval_db_i, time_i.
+        Eve_FastICA.append(tmp_fastica)
+        Eve_CdICA.append(tmp_cdica)
+        Eve_AeICA.append(tmp_aeica)
+        Eve_MeICA.append(tmp_meica)
+
+    save_data_csv(Eve_FastICA, 'test_results/google_dataset/fastica.csv')
+    save_data_csv(Eve_CdICA, 'test_results/google_dataset/cdica.csv')
+    save_data_csv(Eve_AeICA, 'test_results/google_dataset/aeica.csv')
+    save_data_csv(Eve_MeICA, 'test_results/google_dataset/meica.csv')
