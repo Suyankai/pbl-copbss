@@ -30,6 +30,7 @@ PGB = progressbar.ProgressBar()
     B = A ^ -1
 '''
 
+
 def save_data_csv(data, name_csv):
     if os.path.isfile(name_csv):
         f = open(file=name_csv, mode='ab')
@@ -96,10 +97,13 @@ if __name__ == '__main__':
         tmp_aeica = [source_number]
         tmp_meica = [source_number]
 
-        for test_i in np.arange(1, 6, 1):
-            S, A, X = pyfbss_tb.generate_matrix_S_A_X(folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
-            print('type        eval_dB            time(ms) for       ' + str(source_number)+' sources, ' + str(test_i) + '-th test.')
-            print('--------------------------------------------------------------------------------')
+        for test_i in np.arange(1, 2, 1):
+            S, A, X = pyfbss_tb.generate_matrix_S_A_X(
+                folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
+            print('type        eval_dB            time(ms) for       ' +
+                  str(source_number)+' sources, ' + str(test_i) + '-th test.')
+            print(
+                '--------------------------------------------------------------------------------')
             eval_type = 'sdr'
 
             # time and accuracy of FastICA
@@ -112,7 +116,8 @@ if __name__ == '__main__':
 
             # time and accuracy of CdICA
             pyfbss_tb.timer_start()
-            hat_S = pyfbss.cdica(X, max_iter=100, tol=1e-04, ext_initial_matrix=0)
+            hat_S = pyfbss.cdica(
+                X, max_iter=100, tol=1e-04, ext_initial_matrix=0)
             time = pyfbss_tb.timer_value()
             Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
             tmp_cdica.extend([Eval_dB, time])
@@ -120,7 +125,8 @@ if __name__ == '__main__':
 
             # Time and accuracy of AeICA
             pyfbss_tb.timer_start()
-            hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04, ext_adapt_ica=interval)
+            hat_S = pyfbss.aeica(X, max_iter=100, tol=1e-04,
+                                 ext_adapt_ica=interval)
             time = pyfbss_tb.timer_value()
             Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
             tmp_aeica.extend([Eval_dB, time])
@@ -128,7 +134,8 @@ if __name__ == '__main__':
 
             # Time and accuracy of MeICA
             pyfbss_tb.timer_start()
-            hat_S = pyfbss.meica(X, max_iter=100, tol=1e-04, break_coef=0.92, ext_multi_ica=extraction_base)
+            hat_S = pyfbss.meica(X, max_iter=100, tol=1e-04,
+                                 break_coef=0.92, ext_multi_ica=extraction_base)
             time = pyfbss_tb.timer_value()
             Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
             tmp_meica.extend([Eval_dB, time])

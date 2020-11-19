@@ -261,7 +261,7 @@ class MultiLevelExtractionICA(FastbssBasic):
                 self.Stack = [lim]
                 _sum = 0
             _sum += lim
-            if _sum < break_coef*0.5*(self.Stack[0]+self.Stack[-1])*len(self.Stack) or self.Stack[-1]<tol:
+            if _sum < break_coef*0.5*(self.Stack[0]+self.Stack[-1])*len(self.Stack) or self.Stack[-1] < tol:
                 break
         return B, lim
 
