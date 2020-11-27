@@ -141,7 +141,7 @@ class PyFastbssTestbed:
         # Parameters:
 
             mixing_type:
-                'random': The value of a_i_j are in interval (minimum_value, minimum_value) 
+                'random': The value of a_i_j are in interval (minimum_value, maximum_value) 
                     randomly distributed 
                 'normal': The value of a_i_j (i==j) are equal to 1. The value of a_i_j (i!=j) 
                     are normal distributed, the distribution correspond with N(mu,sigma) 
