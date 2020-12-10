@@ -14,3 +14,8 @@ if __name__ == "__main__":
     tol=1e-04,
     break_coef=0.92
     ext_multi_ica=2
+
+    # TODO 告诉B.Manager初始化
+
+    # TODO 将参数传递给newton_iteration
+        # multi_level_extraction_newton_iteration(self, X, B, max_iter, tol, break_coef, _ext_multi_ica)
