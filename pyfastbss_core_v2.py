@@ -298,7 +298,7 @@ class MultiLevelExtractionICA_dev(FastbssBasic):
         B_1 = self.decorrelation(np.dot(B_0, V_inv))
         self.Stack = []
         B_1, sin = self.newton_iteration_auto_break_dev(
-            B_0, _X, max_iter, _tol, break_coef)
+            B_1, _X, max_iter, _tol, break_coef)
         B_1 = np.dot(B_1, V)
         
         return B_1, sin
