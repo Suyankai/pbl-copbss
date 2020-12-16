@@ -295,6 +295,44 @@ class MultiLevelExtractionICA(FastbssBasic):
             _X, V, V_inv = self.whiten_with_inv_V(_X)
             B = self.decorrelation(np.dot(B, V_inv))
             self.Stack = []
+            B= self.newton_iteration_auto_break(
+                B, _X, max_iter, tol, break_coef)[0]
+            B = np.dot(B, V)
+        return B
+
+    
+    def multi_level_extraction_newton_iteration2(self, X, B, max_iter, tol, break_coef, _ext_multi_ica):
+        '''
+        # multi_level_extraction_newton_iteration2
+        # (self, X, B, max_iter,  break_coef, _ext_multi_ica):
+
+        # Usage:
+
+            Newton iteration with multi-level signal extraction, the extraction
+            interval is (_ext_multi_ica)^grad, grad=_ext_multi_ica,...,3,2,1.
+            this version optimize the break condition.
+
+        # Parameters:
+
+            B: Separation matrix.
+            X: Whitened mixed signals.
+            max_iter: Maximum number of iteration.
+            break_coef: The paramter, which determine when the iteration
+                should jump out.
+            _ext_multi_ica: The maximum signal extraction interval is  m/((_ext_multi_ica)^grad) >= n
+
+        # Output:
+
+            Separation matrix B.
+        '''
+        n, m = X.shape
+        _grad = int(math.log(m//n, _ext_multi_ica))
+        _prop_series = _ext_multi_ica**np.arange(_grad, -1, -1)
+        for i in range(1, _grad+1):
+            _X = X[:, ::_prop_series[i]]
+            _X, V, V_inv = self.whiten_with_inv_V(_X)
+            B = self.decorrelation(np.dot(B, V_inv))
+            self.Stack = []
             B,lim= self.newton_iteration_auto_break(
                 B, _X, max_iter, tol, break_coef)
             B = np.dot(B, V)
@@ -328,6 +366,36 @@ class MultiLevelExtractionICA(FastbssBasic):
             X, B1, max_iter, tol, break_coef, ext_multi_ica)
         S2 = np.dot(B2, X)
         return S2
+
+    def meica2(self, X, max_iter=100, tol=1e-04, break_coef=0.9, ext_multi_ica=8):
+        '''
+        # mleica(self, X, max_iter=100, break_coef=0.9, ext_multi_ica=8):
+
+        # Usage:
+
+            Newton iteration with multi-level signal extraction, the extraction
+            interval is 2^n, n=_ext_multi_ica,...,3,2,1.
+
+        # Parameters:
+
+            X: Mixed signals, which is obtained from the observers.
+            max_iter: Maximum number of iteration.
+            break_coef: The paramter, which determine when the iteration
+                should jump out.
+            _ext_multi_ica: The maximum signal extraction interval is  2^_ext_multi_ica
+
+        # Output:
+
+            Estimated source signals matrix S.
+        '''
+        self.Stack = []
+        B1 = self.generate_initial_matrix_B(X)
+        B2 = self.multi_level_extraction_newton_iteration2(
+            X, B1, max_iter, tol, break_coef, ext_multi_ica)
+        S2 = np.dot(B2, X)
+        return S2
+
+    
 
 
 class ComponentDependentICA(FastbssBasic):
@@ -606,6 +674,8 @@ class PyFastbss(MultiLevelExtractionICA, UltraFastICA, FastICA):
             return self.fastica(X, max_iter, tol)
         elif method == 'meica':
             return self.meica(X, max_iter, tol, break_coef, ext_multi_ica)
+        elif method == 'meica2':
+            return self.meica2(X, max_iter, tol, break_coef, ext_multi_ica)
         elif method == 'cdica':
             return self.cdica(X, max_iter, tol, ext_initial_matrix)
         elif method == 'aeica':
