@@ -1,3 +1,6 @@
+import sys
+from numpy.lib.utils import source
+sys.path.append("..")
 from pyfastbss_core import PyFastbss, pyfbss,MultiLevelExtractionICA
 from pyfastbss_testbed import pyfbss_tb
 import pyfastbss_example as pyfbss_ex

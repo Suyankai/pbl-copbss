@@ -1,7 +1,6 @@
 import numpy as np
 import math
 
-
 '''
 # FAST BSS Version 0.1.0:
 
@@ -296,9 +295,10 @@ class MultiLevelExtractionICA(FastbssBasic):
             _X, V, V_inv = self.whiten_with_inv_V(_X)
             B = self.decorrelation(np.dot(B, V_inv))
             self.Stack = []
-            B = self.newton_iteration_auto_break(
-                B, _X, max_iter, tol, break_coef)[0]
+            B,lim= self.newton_iteration_auto_break(
+                B, _X, max_iter, tol, break_coef)
             B = np.dot(B, V)
+            if lim<=tol:break
         return B
 
     def meica(self, X, max_iter=100, tol=1e-04, break_coef=0.9, ext_multi_ica=8):

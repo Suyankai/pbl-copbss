@@ -1,3 +1,6 @@
+import sys
+from numpy.lib.utils import source
+sys.path.append("..")
 from pyfastbss_core import PyFastbss, pyfbss
 from pyfastbss_testbed import pyfbss_tb
 import pyfastbss_example as pyfbss_ex
@@ -9,28 +12,34 @@ import socket
 PGB = progressbar.ProgressBar()
 
 
-def init_B(X):
-    """
-    # 初始化一个B和lim
-    """
-    B = pyfbss.generate_initial_matrix_B(X)
-    lim = None
-    pass
+class BManager:
+    def __init__(self) -> None:
+        super().__init__()
+        """
+        # 初始化一个B和lim
+        """
+        self.B = pyfbss.generate_initial_matrix_B(X)
+        self.lim = None
+        
+       
 
-def update_B(B_get,lim_get,B,lim):
-    """
-    # 根据lim的大小来保持最优的B和lim
-    """
-    if (lim_get<lim | lim==None):
-        return B_get, lim_get
-    else:
-        return B,lim
+    def update_B(self,B_get,lim_get,B,lim):
+        """
+        # 根据lim的大小来保持最优的B和lim
+        """
+        if (lim_get<self.lim | self.lim==None):
+            return B_get, lim_get
+        else:
+            return self.B,self.lim
 
-if __name__ == "__main__":
+    def get_B(self):
+        return self.B
+
+""" if __name__ == "__main__":
     # socket 
     s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     port = 12300
-    s.bind(('localhost',port))
+    s.bind(("127.0.0.1",port))
     
     s.listen(5)
 
@@ -45,4 +54,4 @@ if __name__ == "__main__":
     
 
     # TODO 接受信号 B,Lim 并和目前的B, Lim
-    pass
+    pass """

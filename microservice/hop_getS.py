@@ -10,6 +10,11 @@ import math
 import progressbar
 PGB = progressbar.ProgressBar()
 
+class hop_getS:
+    
+    def __init__(self,folder_address,duration,source_number,mixing_type,max_min,mu_sigma) -> None:
+        super().__init__()
+
 if __name__ == "__main__":
     # TODO 建立socket，接受参数
     
