@@ -29,6 +29,7 @@ import math
 
 class FastbssBasic():
 
+
     def whiten(self, X):
         '''
         # whiten(self, X):
@@ -252,6 +253,7 @@ class MultiLevelExtractionICA(FastbssBasic):
         '''
         _sum = 0
         _max = 0
+        self.Stack=[]
         for _ in range(max_iter):
             B, lim = self._iteration(B, X)
             self.Stack.append(lim)
@@ -294,7 +296,7 @@ class MultiLevelExtractionICA(FastbssBasic):
             _X = X[:, ::_prop_series[i]]
             _X, V, V_inv = self.whiten_with_inv_V(_X)
             B = self.decorrelation(np.dot(B, V_inv))
-            self.Stack = []
+            self.Stack=[]
             B= self.newton_iteration_auto_break(
                 B, _X, max_iter, tol, break_coef)[0]
             B = np.dot(B, V)

@@ -3,34 +3,43 @@ from numpy.lib.utils import source
 sys.path.append("..")
 from pyfastbss_core import PyFastbss, pyfbss
 from pyfastbss_testbed import pyfbss_tb
-import pyfastbss_example as pyfbss_ex
-import numpy as np
-import os
-import math
+from hop_Source_controller import hop_Source_controller
+
 import progressbar
-import socket
+
 PGB = progressbar.ProgressBar()
 
 
-class BManager:
-    def __init__(self) -> None:
+class hop_B_Manager:
+    def __init__(self, Source_controller:hop_Source_controller) -> None:
         super().__init__()
         """
         # 初始化一个B和lim
         """
-        self.B = pyfbss.generate_initial_matrix_B(X)
+        self.B = pyfbss.generate_initial_matrix_B(Source_controller.get_X())
         self.lim = None
         
        
 
-    def update_B(self,B_get,lim_get,B,lim):
+    def update_B(self,B,lim):
         """
-        # 根据lim的大小来保持最优的B和lim
+        根据lim的大小来保持最优的B和lim
+        
         """
-        if (lim_get<self.lim | self.lim==None):
-            return B_get, lim_get
+        # 如果传进B只是中间的临时值，则传入lim为None，此时只更新B        
+        if lim == None:
+            self.B=B
+        # 如果存在lim则进行对比
         else:
-            return self.B,self.lim
+            if self.lim == None:
+                self.B=B
+                self.lim=lim
+            elif self.lim>=lim:
+                self.B=B
+                self.lim=lim
+
+            
+        
 
     def get_B(self):
         return self.B
