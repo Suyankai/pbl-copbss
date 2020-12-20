@@ -257,6 +257,7 @@ class MultiLevelExtractionICA(FastbssBasic):
         for _ in range(max_iter):
             B, lim = self._iteration(B, X)
             self.Stack.append(lim)
+
             if lim > _max:
                 _max = lim
                 self.Stack = [lim]
@@ -297,8 +298,9 @@ class MultiLevelExtractionICA(FastbssBasic):
             _X, V, V_inv = self.whiten_with_inv_V(_X)
             B = self.decorrelation(np.dot(B, V_inv))
             self.Stack=[]
-            B= self.newton_iteration_auto_break(
-                B, _X, max_iter, tol, break_coef)[0]
+            B,lim= self.newton_iteration_auto_break(
+                B, _X, max_iter, tol, break_coef)
+            # print(f' for {i} series: lim= {lim}')
             B = np.dot(B, V)
         return B
 
@@ -397,7 +399,6 @@ class MultiLevelExtractionICA(FastbssBasic):
         S2 = np.dot(B2, X)
         return S2
 
-    
 
 
 class ComponentDependentICA(FastbssBasic):
