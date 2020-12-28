@@ -9,7 +9,6 @@ import progressbar
 from hop_B_Manager import hop_B_Manager
 from hop_MeICA_controller import hop_MeICA_controller
 import hop_MeICA_newton_iteration
-import hop_MeICA_Stack
 from hop_Source_controller import hop_Source_controller
 PGB = progressbar.ProgressBar()
 

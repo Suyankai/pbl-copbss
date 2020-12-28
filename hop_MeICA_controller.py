@@ -7,7 +7,7 @@ import numpy as np
 import os
 import math
 import progressbar
-
+import time
 class hop_MeICA_controller:
     def __init__(self, max_iter, tol, break_coef, ext_multi_ica, source_controller:hop_Source_controller, b_manager:hop_B_Manager) -> None:
         super().__init__()
@@ -22,10 +22,12 @@ class hop_MeICA_controller:
 
 
     def get_hat_S(self):
+        
         n, m = self.X.shape
         _grad = int(math.log(m//n, self.ext_multi_ica))
         _prop_series = self.ext_multi_ica**np.arange(_grad, -1, -1)
         for i in range(1, _grad+1):
+            time_before=time.time()
             B_temp=self.b_manager.get_B()
             _X = self.X[:, ::_prop_series[i]]
             _X, V, V_inv = pyfbss.whiten_with_inv_V(_X)
@@ -34,6 +36,8 @@ class hop_MeICA_controller:
             B_temp,lim=self.MeICA_newton_itertion.meica_newton_iteration_autobreak()
             B_temp = np.dot(B_temp, V)
             self.b_manager.update_B(B_temp,lim)
+            time_after=time.time()
+            #print(f'using time:{time_after-time_before}')
         self.hat_S = np.dot(self.b_manager.get_B(), self.X)
         return self.hat_S 
     
