@@ -61,7 +61,9 @@ Test data set is in the fold `google_dataset`. More data set can be downloaded b
 ## Usage : Microservice
 This part's core and alogrithm also base on `pyfastbss_core.py`.
 
-Here is Information to run the Simulator of Microservice. run the `client.py` to show the figure of **Time-Source Number** and **SNR-Source Number**
+Here is Information to run the Simulator of Microservice. 
+
+run the `client.py` to show the figure of **Time-Source Number** and **SNR-Source Number**
 ```
 python3 client.py
 ```
@@ -90,7 +92,7 @@ You can also setting the parameter for this simulator:
                         setting the latency of micro service, 
                         default: 0.5 [ms]
 ```
-The default sounce number is : 5, you can set it by change, e.x:
+The default sounce number is : 5 , you can set it by running, e.x:
 ```
 --source_num 10
 ```
@@ -99,14 +101,14 @@ More Information by running you can see help, by running:
 python3 client.py -h
 ```
 ### Tips:
-If you use WSL2, you need to use Tkagg to show the figure, by add
+If you use WSL2, you need to use Tkagg to show the figure, by adding
 ```
 import matplotlib 
 matplotlib.use('TkAgg')
 ```
 in `client.py`
 
-and you need XServer to show the GUI, for VsCode you need to set in:
+and you need XServer to show the GUI, for VSCode you need to set:
 ```
 export DISPLAY=`cat /etc/resolv.conf | grep nameserver | awk '{print $2}'`:0
 ```
