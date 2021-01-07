@@ -39,7 +39,7 @@ These could be installed by `conda install numpy scipy museval progressbar2 ffmp
 
 A test data set from [Google Audio Set](https://research.google.com/audioset/) is provided for testing.
 
-## Usage 
+## Usage : pyfassbass_testbed
 The core analysis algorithm is given in `pyfastbss_core.py`.
 
 Signal reading and writing, as well as data pre-processing and evaluation, are done by `pyfastbss_testbed.py`.
@@ -58,6 +58,27 @@ print('FastICA: ', Eval_dB, '; ', time)
 ```
 
 Test data set is in the fold `google_dataset`. More data set can be downloaded by using the tool ***Youtube Downloader*** in `youtube_downloader`
+## Usage : Microservice
+This part's core and alogrithm also base on `pyfastbss_core.py`.
+
+Here is Information to run the Simulator of Microservice
+```
+  --iter_time {0,1} {0,1}
+                        get meantime of iteration and plot eachtime and iter num, default [0,0]
+  --run_FastICA         run FastICA
+  --run_MeICA           run MeICA
+  --run_Simulator       run time Simulator, it will simulate the time base on    our microsevice, you can setting the latency and performance for simulator, see help
+  --source_num SOURCE_NUM
+                        setting source number, default: 5
+  --service_latency SERVICE_LATENCY
+                        setting the latency of service for origin MeICA, 
+                        default: 50 [ms]
+  --service_performance SERVICE_PERFORMANCE
+                        setting the performance of service compare to mircoservice, 
+                        default: 10 [times]
+  --micro_latency MICRO_LATENCY
+                        setting the latency of micro service, default: 0.5 [ms]
+```
 
 ## Citation
 
