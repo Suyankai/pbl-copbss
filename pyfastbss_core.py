@@ -400,7 +400,6 @@ class MultiLevelExtractionICA(FastbssBasic):
         return S2
 
 
-
 class ComponentDependentICA(FastbssBasic):
 
     def mixing_matrix_estimation(self, X, ext_initial_matrix):

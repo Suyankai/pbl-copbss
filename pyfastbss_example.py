@@ -142,13 +142,13 @@ if __name__ == '__main__':
             print('MeICA:   ', Eval_dB, '; ', time)
 
             # Time and accuracy of MeICA2
-            pyfbss_tb.timer_start()
-            hat_S = pyfbss.meica2(X, max_iter=100, tol=1e-06,
-                                 break_coef=0.92, ext_multi_ica=extraction_base)
-            time = pyfbss_tb.timer_value()
-            Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
-            tmp_meica.extend([Eval_dB, time])
-            print('MeICA2:   ', Eval_dB, '; ', time)
+            # pyfbss_tb.timer_start()
+            # hat_S = pyfbss.meica2(X, max_iter=100, tol=1e-06,
+            #                      break_coef=0.92, ext_multi_ica=extraction_base)
+            # time = pyfbss_tb.timer_value()
+            # Eval_dB = pyfbss_tb.bss_evaluation(S, hat_S, eval_type)
+            # tmp_meica.extend([Eval_dB, time])
+            # print('MeICA2:   ', Eval_dB, '; ', time)
 
         # Format of results: source_number, eval_db_i, time_i.
         Eve_FastICA.append(tmp_fastica)

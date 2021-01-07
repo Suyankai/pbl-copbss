@@ -15,10 +15,10 @@ if __name__ == '__main__':
 
     Eve_MeICA = []
 
-    for source_number in np.arange(2, 5, 1):
+    for source_number in np.arange(5, 6, 1):
         tmp_meica = [source_number]
     
-        for test_i in np.arange(1, 2, 1):
+        for test_i in np.arange(1, 10, 1):
             S, A, X = pyfbss_tb.generate_matrix_S_A_X(
                 folder_address, duration, source_number, mixing_type="normal", max_min=(1, 0.01), mu_sigma=(0, 1))
             print('type        eval_dB            time(ms) for       ' +
